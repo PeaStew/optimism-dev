@@ -30,9 +30,13 @@ const DerivationVersion1 = plasma.TxDataVersion1
 const MaxSpanBatchSize = MaxRLPBytesPerChannel
 
 // MaxChannelBankSize is the amount of memory space, in number of bytes,
-// till the bank is pruned by removing channels,
-// starting with the oldest channel.
+// till the bank is pruned by removing channels, starting with the oldest channel.
 const MaxChannelBankSize = 100_000_000
+
+// MaxChannelBankSizeV1 is the amount of memory space, in number of bytes,
+// till the bank is pruned by removing channels, starting with the oldest channel.
+// This limit is applied after Fjord
+const MaxChannelBankSizeV1 = 1_000_000_000
 
 // MaxRLPBytesPerChannel is the maximum amount of bytes that will be read from
 // a channel. This limit is set when decoding the RLP.

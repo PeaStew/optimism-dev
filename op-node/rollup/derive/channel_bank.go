@@ -60,6 +60,13 @@ func (cb *ChannelBank) Origin() eth.L1BlockRef {
 	return cb.prev.Origin()
 }
 
+func (cb *ChannelBank) maxSize() int {
+	if cb.Config.IsFjord(cb.Origin().Time) {
+		return MaxChannelBankSizeV1
+	}
+	return MaxChannelBankSize
+}
+
 func (cb *ChannelBank) prune() {
 	// check total size
 	totalSize := uint64(0)
@@ -67,7 +74,7 @@ func (cb *ChannelBank) prune() {
 		totalSize += ch.size
 	}
 	// prune until it is reasonable again. The high-priority channel failed to be read, so we start pruning there.
-	for totalSize > MaxChannelBankSize {
+	for totalSize > cb.maxSize() {
 		id := cb.channelQueue[0]
 		ch := cb.channels[id]
 		cb.channelQueue = cb.channelQueue[1:]
