@@ -44,9 +44,16 @@ func (cr *ChannelInReader) Origin() eth.L1BlockRef {
 	return cr.prev.Origin()
 }
 
+func (cr *ChannelInReader) maxRLPBytePerChannel() int {
+	if cr.cfg.IsFjord(cr.prev.Origin().Time) {
+		return MaxRLPBytePerChannelV1
+	}
+	return MaxRLPBytePerChannel
+}
+
 // TODO: Take full channel for better logging
 func (cr *ChannelInReader) WriteChannel(data []byte) error {
-	if f, err := BatchReader(bytes.NewBuffer(data)); err == nil {
+	if f, err := BatchReader(bytes.NewBuffer(data, cr.maxRLPBytePerChannel())); err == nil {
 		cr.nextBatchFn = f
 		cr.metrics.RecordChannelInputBytes(len(data))
 		return nil

@@ -109,7 +109,8 @@ func processFrames(cfg Config, id derive.ChannelID, frames []FrameWithMetadata) 
 	var batchTypes []int
 	invalidBatches := false
 	if ch.IsReady() {
-		br, err := derive.BatchReader(ch.Reader())
+		// TODO(): Determine this based on the chain spec + highest L1 Inclusion block number
+		br, err := derive.BatchReader(ch.Reader(), params.MaxRLPBytesPerChannel)
 		if err == nil {
 			for batchData, err := br(); err != io.EOF; batchData, err = br() {
 				if err != nil {

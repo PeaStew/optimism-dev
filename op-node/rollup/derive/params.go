@@ -42,6 +42,10 @@ const MaxChannelBankSizeV1 = 1_000_000_000
 // a channel. This limit is set when decoding the RLP.
 const MaxRLPBytesPerChannel = 10_000_000
 
+// MaxRLPBytesPerChannelV1 is the maximum amount of bytes that will be read from
+// a channel after Fjord. This limit is set when decoding the RLP.
+const MaxRLPBytesPerChannelV1 = 100_000_000
+
 // DuplicateErr is returned when a newly read frame is already known
 var DuplicateErr = errors.New("duplicate frame")
 
