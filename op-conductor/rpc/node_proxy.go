@@ -3,6 +3,7 @@ package rpc
 import (
 	"context"
 
+	"github.com/ethereum/go-ethereum/common/hexutil"
 	"github.com/ethereum/go-ethereum/log"
 
 	"github.com/ethereum-optimism/optimism/op-node/rollup"
@@ -40,7 +41,11 @@ func (api *NodeProxyBackend) SyncStatus(ctx context.Context) (*eth.SyncStatus, e
 	return status, err
 }
 
-func (api *NodeProxyBackend) OutputAtBlock(ctx context.Context, blockNum uint64) (*eth.OutputResponse, error) {
+func (api *NodeProxyBackend) OutputAtBlock(ctx context.Context, blockNumString string) (*eth.OutputResponse, error) {
+	blockNum, err := hexutil.DecodeUint64(blockNumString)
+	if err != nil {
+		return nil, err
+	}
 	output, err := api.client.OutputAtBlock(ctx, blockNum)
 	if err != nil {
 		return nil, err
